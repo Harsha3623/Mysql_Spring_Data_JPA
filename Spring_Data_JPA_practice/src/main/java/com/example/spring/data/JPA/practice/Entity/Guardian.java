@@ -35,13 +35,15 @@ import org.hibernate.annotations.NotFound;
 public class Guardian {
 
 
-    @NotNull
+    @NotBlank(message = "Guardian name cannot be blank")
     @Column(nullable = false)
     private String name;
-    @NotNull
+
+    @NotBlank(message = "Guardian email is required")
     @Column(nullable = false)
     private String email;
-    @NotNull
+
+    @NotBlank(message = "Guardian mobile number is required")
     @Column(nullable = false)
     private String mobile;
 }

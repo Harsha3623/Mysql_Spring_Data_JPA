@@ -1,5 +1,7 @@
 package com.example.spring.data.JPA.practice.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,5 +43,6 @@ public class CourseMaterial {
             name = "course_id",
             referencedColumnName = "courseId"
     )
+    @JsonIgnoreProperties("material")
     private Course course;
 }

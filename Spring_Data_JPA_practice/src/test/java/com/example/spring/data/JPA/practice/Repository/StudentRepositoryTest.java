@@ -50,7 +50,7 @@ class StudentRepositoryTest {
     }
     @Test
     public void findByName(){
-        List<Student> res =  repository.findByFirstName("abc");
+        List<Student> res =  repository.findByFirstName("harsha");
         System.out.println(res);
     }
 

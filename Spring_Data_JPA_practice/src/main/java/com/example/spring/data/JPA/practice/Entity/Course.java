@@ -1,13 +1,24 @@
 package com.example.spring.data.JPA.practice.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = "students")
 public class Course {
 
     @Id
@@ -21,14 +32,20 @@ public class Course {
             generator ="course_sequence"
     )
     private Long courseId;
+
+    @NotBlank(message = "title is required")
     private String title;
+
+    @NotNull(message = "credit is required")
     private Integer credit;
 
-    //bi-directional mapping
-    //whenever the course list is displayed it shows course material also
-    @OneToOne(
-            //course is the reference which is referenced in course material
-         mappedBy = "course"
-    )
+    @OneToOne(mappedBy = "course", cascade = CascadeType.ALL)
+    // Avoiding back ref issue
+    @JsonIgnoreProperties("course")
     private CourseMaterial material;
+
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
+    // Ignore back ref to avoid infinite loop
+    @JsonIgnoreProperties("courses")
+    private Set<Student> students;
 }

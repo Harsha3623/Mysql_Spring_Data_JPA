@@ -3,6 +3,7 @@ package com.example.spring.data.JPA.practice.Entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -29,11 +30,13 @@ public class CourseMaterial {
             strategy = GenerationType.IDENTITY,
             generator ="course_material_sequence"
     )
+
     private Long courseMaterialId;
+
+    @NotBlank(message = "URL is required")
     private String url;
 
     @OneToOne(
-            cascade = CascadeType.ALL,
             //fetch lazy which fetch only course material
             //fetch eager fetches course material along with the course
             fetch = FetchType.EAGER

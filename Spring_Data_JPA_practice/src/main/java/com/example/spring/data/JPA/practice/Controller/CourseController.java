@@ -48,4 +48,10 @@ public class CourseController {
         service.deleteById(id);
         return ResponseEntity.ok("Course with ID " + id + " deleted successfully.");
     }
+
+    //native
+    @GetMapping("/native")
+    public List<Course> getAllCourseByNative(){
+        return service.getAllCourseByNative();
+    }
 }

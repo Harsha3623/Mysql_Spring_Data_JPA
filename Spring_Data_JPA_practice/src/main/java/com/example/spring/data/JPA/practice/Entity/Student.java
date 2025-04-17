@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -49,9 +51,13 @@ public class Student {
     private String emailId;
 
     @Embedded
+    //without guardian the student object cannot be created
+    @NotNull(message = "Guardian is required.")
     private Guardian guardian;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(
             name = "student_course",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -59,4 +65,6 @@ public class Student {
     )
     @JsonIgnoreProperties("students") // Ignore course -> students to break loop
     private Set<Course> courses;
+//        @ManyToMany(mappedBy = "students") // No cascade delete here
+//        private Set<Course> courses;
 }

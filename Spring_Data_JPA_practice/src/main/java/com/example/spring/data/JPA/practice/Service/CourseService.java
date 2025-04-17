@@ -1,6 +1,8 @@
 package com.example.spring.data.JPA.practice.Service;
 
 import com.example.spring.data.JPA.practice.Entity.Course;
+import com.example.spring.data.JPA.practice.Entity.CourseMaterial;
+import com.example.spring.data.JPA.practice.Entity.Student;
 import com.example.spring.data.JPA.practice.Repository.CourseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,11 @@ public class CourseService {
 
     //Add a new course
     public Course addCourse(Course course) {
+        CourseMaterial material = course.getMaterial();
+        //when we pass both course and course material at a time
+        if(material!=null){
+            material.setCourse(course);
+        }
         return repository.save(course); // return saved entity directly
     }
 
@@ -49,6 +56,16 @@ public class CourseService {
         if (!repository.existsById(id)) {
             throw new RuntimeException("Course with ID " + id + " does not exist.");
         }
-        repository.deleteById(id);
+        Course course = repository.findById(id).orElseThrow(()-> new RuntimeException("Course is not present"));
+        for(Student student:course.getStudents()){
+            student.getCourses().remove(course);
+        }
+        course.getStudents().clear();
+
+        repository.delete(course);
+    }
+
+    public List<Course> getAllCourseByNative() {
+        return repository.gtAllCourseDetails();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.spring.data.JPA.practice.Controller;
 
+import com.example.spring.data.JPA.practice.DTO.CourseDTO;
 import com.example.spring.data.JPA.practice.Entity.Course;
+import com.example.spring.data.JPA.practice.Service.CourseDtoService;
 import com.example.spring.data.JPA.practice.Service.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,13 @@ public class CourseController {
     @GetMapping("/native")
     public List<Course> getAllCourseByNative(){
         return service.getAllCourseByNative();
+    }
+
+    //dto
+    @Autowired
+    private CourseDtoService courseDtoService;
+    @GetMapping("/dto")
+    public List<CourseDTO> getAllCourse(){
+        return courseDtoService.getAllCourseDetails();
     }
 }

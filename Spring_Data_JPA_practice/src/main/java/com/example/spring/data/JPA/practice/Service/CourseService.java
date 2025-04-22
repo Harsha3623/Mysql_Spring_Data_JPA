@@ -44,6 +44,7 @@ public class CourseService {
                 () -> new RuntimeException("Course with ID " + id + " not found.")
         );
 
+        //repository.save()
         existing.setTitle(course.getTitle());
         existing.setCredit(course.getCredit());
         // if you plan to update relationships, do it here
